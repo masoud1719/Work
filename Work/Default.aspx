@@ -526,6 +526,11 @@
 
     }
 
+    function openPDF() {
+        var pdfWindow = window.open();
+        pdfWindow.document.write("<embed width='100%' height='100%' src='/resources/Manual.pdf' type='application/pdf'>");
+    }
+
        // when user click delele plug
     var delete_plug = function (record) {
         console.log(record.data.Zone);
@@ -597,7 +602,7 @@
 
                                                         <ext:ButtonGroup runat="server" Title="<b>Document</b>"  HeaderPosition="Bottom">
                                                             <Items>
-                                                                <ext:Button ID="Button3" runat="server"  Text="Guide" IconUrl="/resources/images/guide.png"  Scale="Large"  Width="80" OnDirectClick="my_message"  IconAlign="Top" Disabled="false" />
+                                                                <ext:Button ID="Button3" runat="server"  Text="Guide" IconUrl="/resources/images/guide.png"  Scale="Large"  Width="80" Handler="openPDF()"   IconAlign="Top" Disabled="false" />
                                                             </Items>
                                                         </ext:ButtonGroup>
 

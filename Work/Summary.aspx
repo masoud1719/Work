@@ -151,8 +151,8 @@
                 worksheet.Cells[j+1,10].Value = model.PcMax;
                 worksheet.Cells[j+1,11].Value = model.Swir;
 
-                double[] ZoneData_Pc = new double[] {model.Pce,model.Swe} ;
-                double[] ZoneData_Sw = new double[] {model.PcMax,model.Swir} ;
+                double[] ZoneData_Pc = new double[] {model.Pce, model.PcMax} ;
+                double[] ZoneData_Sw = new double[] {  model.Swe, model.Swir} ;
 
                 double nStep=(model.BottomDepth-model.TopDepth)/0.1;
                 var worksheet1 = xls.Workbook.Worksheets["Sheet1"];
