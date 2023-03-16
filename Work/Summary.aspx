@@ -1,5 +1,10 @@
 ﻿<%@ Page Language="C#" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
+<%@ Import Namespace="OfficeOpenXml.Core.ExcelPackage" %>
+<%@ Import Namespace="OfficeOpenXml.Drawing.Chart.Style" %>
+<%@ Import Namespace="Ext.Net.Utilities" %>
+<%@ Import Namespace="OfficeOpenXml.Drawing" %>
+<%@ Import Namespace="OfficeOpenXml.Drawing.Chart" %>
 <%@ Import Namespace="Work.Data" %>
 <%@ Import Namespace="System.Data.OleDb" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -33,7 +38,7 @@
     public double oilDensity;
     public double waterDensity;
 
-  
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -70,7 +75,7 @@
 
     private string getResSystem(String resSys)
     {
-        if (resSys.ToLower().Equals("water/oil") || resSys.ToLower().Equals("wo"))
+        if (resSys.ToLower().Equals("oil/water") || resSys.ToLower().Equals("ow"))
         {
             return "OW";
         }
@@ -91,7 +96,7 @@
         }  else if (labSys.ToLower().Equals("air/mercury") || labSys.ToLower().Equals("am"))
         {
             return "AM";
-        } 
+        }
         return "AO";
     }
 
@@ -180,6 +185,9 @@
                     i++;
                     counter++;
                 }
+                plot(worksheet1, "Swi vs Depth",20,400,2);
+                plot(worksheet1, "Pc vs Depth", 700, 400, 3 );
+                plot(worksheet1, "hc vs Depth", 1400, 400, 4);
             }
 
             xls.SaveAs(summary_file);
@@ -189,6 +197,25 @@
 
 
     }// END OFCOMP MODULE
+
+    private void plot(OfficeOpenXml.ExcelWorksheet worksheet, String title, int xPosition, int yPosition, int yColumnNum)
+    {
+
+        if (worksheet.Drawings.Any(d => d.Name.Equals(title)))
+        {
+            ExcelDrawing existingDrawing = worksheet.Drawings.First(d => d.Name.Equals(title));
+            worksheet.Drawings.Remove(existingDrawing);
+        }
+        ExcelChart chart = worksheet.Drawings.AddChart(title, eChartType.XYScatterLines);
+        chart.SetSize(600, 600);
+        chart.SetPosition(xPosition, yPosition);
+        chart.YAxis.Orientation = eAxisOrientation.MaxMin;
+        ExcelChartSerie series2 = chart.Series.Add(worksheet.Cells[2, 1, worksheet.Dimension.End.Row, 1], worksheet.Cells[2, yColumnNum, worksheet.Dimension.End.Row, yColumnNum] );
+
+        // Set chart appearance
+        chart.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle10);
+        chart.Title.Text = title;
+    }
 
     static double[] SatHeight(double Zone_Depth, double Porosity, double FWL, double[] Pc, double[] Sw, double HC_Density, double Water_Density, string Res_Sys, string Lab_Sys)
     {
