@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" %>
 
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
-<%@ Import Namespace="OfficeOpenXml.Core.ExcelPackage" %>
-<%@ Import Namespace="OfficeOpenXml.Drawing.Chart.Style" %>
+<%--<%@ Import Namespace="OfficeOpenXml.Core.ExcelPackage" %>--%>
+<%--<%@ Import Namespace="OfficeOpenXml.Drawing.Chart.Style" %>--%>
 <%@ Import Namespace="Ext.Net.Utilities" %>
 <%@ Import Namespace="OfficeOpenXml.Drawing" %>
-<%@ Import Namespace="OfficeOpenXml.Drawing.Chart" %>
+<%--<%@ Import Namespace="OfficeOpenXml.Drawing.Chart" %>--%>
 <%@ Import Namespace="Work.Data" %>
 <%@ Import Namespace="System.Data.OleDb" %>
 <%@ Import Namespace="System.Data.SqlClient" %>
@@ -32,7 +32,7 @@
     public List<double> calculatePcList;
     public List<double> calculatehcList;
 
-    public string comp_data1_str;
+    public string SATM_data1_str;
     public string resSystem;
     public string labSystem;
     public double oilWaterContact;
@@ -49,7 +49,7 @@
             //this.Chart1.GetStore().DataSource = this.GetData();
 
         }
-        comp_data1_str = Request["comp_data1"];
+        SATM_data1_str = Request["SATM_data1"];
         resSystem = getResSystem(Request["resSystem"]);
         labSystem = getLabSystem(Request["labSystem"]);
         oilWaterContact = Double.Parse(Request["oilWaterContact"]);
@@ -59,7 +59,7 @@
         calculateSwiList = new List<double>();
         calculatePcList = new List<double>();
         calculatehcList = new List<double>();
-        COMP_Calculation(comp_data1_str);
+        SATM_Calculation(SATM_data1_str);
 
         store1.DataSource = get_store1();
         store2.DataSource = get_store2();
@@ -75,7 +75,7 @@
             data.Add(new { depth = depths[i], calculatedSwi = calculateSwiList[i]});
         }
         return data;
-    } 
+    }
 
     private object get_store2()
     {
@@ -85,8 +85,8 @@
             data.Add(new { depth = depths[i], calculatedPc = calculatePcList[i] });
         }
         return data;
-    } 
-    
+    }
+
     private object get_store3()
     {
         var data = new List<object>();
@@ -96,7 +96,7 @@
         }
         return data;
     }
-    
+
     private object get_store4()
     {
         var data = new List<object>();
@@ -137,12 +137,12 @@
     }
 
 
-    //------------------------------------------COMP MODULE CALCULATION-------------------------------------------------------------------									
+    //------------------------------------------SATM MODULE CALCULATION-------------------------------------------------------------------									
 
-    public void COMP_Calculation(string _data1)
+    public void SATM_Calculation(string _data1)
     {
 
-        var file = new System.IO.FileInfo(Server.MapPath("\\Template\\Comp_Output.xlsx"));
+        var file = new System.IO.FileInfo(Server.MapPath("\\Template\\SATM_Output.xlsx"));
 
 
         //                        string pathName = System.IO.Path.GetTempPath() + "see" + Guid.NewGuid().ToString();
@@ -152,16 +152,19 @@
 
         var sourceFileNew = new System.IO.FileInfo(Session["SummaryFileName"].ToString());
 
-        var summary_file = new System.IO.FileInfo(Server.MapPath("\\Template\\Comp_Output.xlsx"));
+        var summary_file = new System.IO.FileInfo(Server.MapPath("\\Template\\SATM_Output.xlsx"));
 
 
         int no_sample = _data1.Split('/').Length;
 
         double FWL = oilWaterContact;
 
+
+
         using (var xls = new OfficeOpenXml.ExcelPackage(summary_file))
         {
             OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
             var worksheet = xls.Workbook.Worksheets["Template"];
             int i = 1;
             worksheet.Cells[1, 1].Value = "NO";
@@ -178,7 +181,7 @@
             for (int j = 1; j < no_sample; j++)
             {
                 string data1 = _data1.Split('/')[j];
-                MyModel model = MyModel.GetModel(data1);
+                SATM model = SATM.GetModel(data1);
                 //
                 worksheet.Cells[j + 1, 1].Value = j;
                 worksheet.Cells[j + 1, 2].Value = model.Zone;
@@ -232,7 +235,7 @@
 
 
 
-    }// END OFCOMP MODULE
+    }
 
     private void plot(OfficeOpenXml.ExcelWorksheet worksheet, String title, int xPosition, int yPosition, int yColumnNum)
     {
@@ -242,14 +245,14 @@
             ExcelDrawing existingDrawing = worksheet.Drawings.First(d => d.Name.Equals(title));
             worksheet.Drawings.Remove(existingDrawing);
         }
-        ExcelChart chart = worksheet.Drawings.AddChart(title, eChartType.XYScatterLines);
+        OfficeOpenXml.Drawing.Chart.ExcelChart chart = worksheet.Drawings.AddChart(title, OfficeOpenXml.Drawing.Chart.eChartType.XYScatterLines);
         chart.SetSize(600, 600);
         chart.SetPosition(xPosition, yPosition);
-        chart.YAxis.Orientation = eAxisOrientation.MaxMin;
-        ExcelChartSerie series2 = chart.Series.Add(worksheet.Cells[2, 1, worksheet.Dimension.End.Row, 1], worksheet.Cells[2, yColumnNum, worksheet.Dimension.End.Row, yColumnNum]);
+        chart.YAxis.Orientation = OfficeOpenXml.Drawing.Chart.eAxisOrientation.MaxMin;
+        OfficeOpenXml.Drawing.Chart.ExcelChartSerie series2 = chart.Series.Add(worksheet.Cells[2, 1, worksheet.Dimension.End.Row, 1], worksheet.Cells[2, yColumnNum, worksheet.Dimension.End.Row, yColumnNum]);
 
-        // Set chart appearance
-        chart.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle10);
+        // Set chart appearance        
+        //chart.StyleManager.SetChartStyle(ePresetChartStyle.LineChartStyle10);
         chart.Title.Text = title;
     }
 
@@ -483,10 +486,7 @@
         return R2;
     }
 
-    //Program: COMP- Best Fit
-
-
-    protected void Comp_Excel_Export(object sender, DirectEventArgs e)
+    protected void SATM_Excel_Export(object sender, DirectEventArgs e)
     {
 
 
@@ -501,7 +501,7 @@
         //}
 
         Response.Clear();
-        Response.AddHeader("Content-Disposition", "attachment; filename=COMP_Summary.xlsx");
+        Response.AddHeader("Content-Disposition", "attachment; filename=SATM_Summary.xlsx");
         Response.AddHeader("Content-Length", summary_file.Length.ToString());
         Response.ContentType = "application/vnd.ms-excel";
         Response.Flush();
@@ -538,12 +538,12 @@
                                 <Items>
                                     <ext:Panel runat="server" Title="Swi vs dpth" Border="false"  BodyPadding="6">
                                         <Items>
-                                            <ext:Panel ID="comp_Plot1" Title="Plot1" runat="server" Flex="1" Region="East" Header="false">
+                                            <ext:Panel ID="SATM_Plot1" Title="Plot1" runat="server" Flex="1" Region="East" Header="false">
                                                 <Content>
                                                     <div id="container1" style=" min-height: 400px; width: 600px; min-width: 350px; margin-left: auto; margin-right: auto;"></div>
                                                 </Content>
                                             </ext:Panel>
-                                            <ext:GridPanel ID="Comp_Summary3_GridPanel" runat="server"  Flex="1" Region="West" AutoScroll="true" Height="400">
+                                            <ext:GridPanel ID="SATM_Summary3_GridPanel" runat="server"  Flex="1" Region="West" AutoScroll="true" Height="400">
                                                 <Store>
                                                     <ext:Store runat="server" ID="store1">
                                                         <Model>
@@ -655,7 +655,7 @@
 
                                     <ext:Panel runat="server" Title="hc vs depth" Border="false"  BodyPadding="6">
                                         <Items>
-                                            <ext:Panel ID="comp_Plot3" Title="Plot3" runat="server" Flex="1" Region="East" Header="false">
+                                            <ext:Panel ID="SATM_Plot3" Title="Plot3" runat="server" Flex="1" Region="East" Header="false">
                                                 <Content>
                                                     <div id="container3" style=" min-height: 400px; width: 600px; min-width: 350px; margin-left: auto; margin-right: auto;"></div>
                                                 </Content>
@@ -719,7 +719,7 @@
 
             //window.alert("Hello");
 
-            App.direct.Comp_Excel_Export();
+            App.direct.SATM_Excel_Export();
 
 
         }

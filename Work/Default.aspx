@@ -24,8 +24,8 @@
 
     public string[] temp_data3 = new string[50];
 
-    public List<MyModel> comp_list_data1 = new List<MyModel>();
-    public List<string> comp_list_data2 = new List<string>();
+    public List<SATM> SATM_list_data1 = new List<SATM>();
+    public List<string> SATM_list_data2 = new List<string>();
 
     private string[] column_name = new string[] { "Status", "Zone", "TopDepth", "BottomDepth", "Thickness", "Kavg", "Phiavg", "Pce", "Swe", "PcMax", "Swir" };
 
@@ -35,7 +35,7 @@
 
         for (int i = 0; i < _data.Count; i++)
         {
-            data.Add(MyModel.GetModel(_data[i]));
+            data.Add(SATM.GetModel(_data[i]));
         }
 
         return data;
@@ -59,7 +59,7 @@
             // if (Session["User_ID"] == null) Response.Redirect("/Home/Logon.aspx?id=1");
             ResourceManager1.RegisterIcon(Icon.Error);
             ResourceManager1.RegisterIcon(Icon.TableCell);
-            comp_list_data1.AddRange(MyModel.GetinitialDatas());
+            SATM_list_data1.AddRange(SATM.GetinitialDatas());
 
             bind_data();
 
@@ -73,11 +73,11 @@
     {
         if (X.IsAjaxRequest)
         {
-            comp_store.AddField(field);
+            SATM_store.AddField(field);
         }
         else
         {
-            comp_store.Model[0].Fields.Add(field);
+            SATM_store.Model[0].Fields.Add(field);
         }
     }
     /*
@@ -87,7 +87,7 @@
     {
         if (X.IsAjaxRequest)
         {
-            this.comp_store.RemoveFields();
+            this.SATM_store.RemoveFields();
         }
 
         // first fix meta data
@@ -95,56 +95,56 @@
         {
             this.AddField(new ModelField() { Name = column_name[i] });
         }
-        comp_store.RebuildMeta();
-        //        comp_store.DataSource = this.comp_data;
-        comp_store.DataSource = comp_list_data1;
-        comp_store.DataBind();
+        SATM_store.RebuildMeta();
+        //        SATM_store.DataSource = this.SATM_data;
+        SATM_store.DataSource = SATM_list_data1;
+        SATM_store.DataBind();
 
         #region Prepare Column Model 
 
         Column ColumnInfo = new Column() { ID = "ColumnInfo", Text = "" };
 
-        Column col1 = new Ext.Net.Column() { Width = 80, ID = "Zone", Text = "Zone", DataIndex = "Zone", Sortable = true, Align = ColumnAlign.Center };
+        Column col1 = new Ext.Net.Column() { Width = 80, ID = "Zone", Text = "Zone", DataIndex = "Zone", Sortable = true };
         col1.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col1);
 
-        Column col2 = new Ext.Net.Column() { Width = 80, ID = "TopDepth", Text = "Top<br> Depth", DataIndex = "TopDepth", Sortable = true, Align = ColumnAlign.Center };
+        Column col2 = new Ext.Net.Column() { Width = 80, ID = "TopDepth", Text = "Top<br> Depth", DataIndex = "TopDepth", Sortable = true };
         col2.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col2);
 
-        Column col3 = new Ext.Net.Column() { Width = 80, ID = "BottomDepth", Text = "Bottom<br>Depth", DataIndex = "BottomDepth", Sortable = true, Align = ColumnAlign.Center };
+        Column col3 = new Ext.Net.Column() { Width = 80, ID = "BottomDepth", Text = "Bottom<br>Depth", DataIndex = "BottomDepth", Sortable = true };
         col3.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col3);
 
-        Column col4 = new Ext.Net.Column() { Width = 150, ID = "Thickness", Text = "Thickness", DataIndex = "Thickness", Sortable = true, Align = ColumnAlign.Center };
+        Column col4 = new Ext.Net.Column() { Width = 150, ID = "Thickness", Text = "Thickness", DataIndex = "Thickness", Sortable = true };
         col4.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col4);
 
-        Column col5 = new Ext.Net.Column() { Width = 150, ID = "Kavg", Text = "K avg", DataIndex = "Kavg", Sortable = true, Align = ColumnAlign.Center };
+        Column col5 = new Ext.Net.Column() { Width = 150, ID = "Kavg", Text = "K avg", DataIndex = "Kavg", Sortable = true };
         col5.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col5);
 
-        Column col6 = new Ext.Net.Column() { Width = 150, ID = "Phiavg", Text = "phi avg", DataIndex = "Phiavg", Sortable = true, Align = ColumnAlign.Center };
+        Column col6 = new Ext.Net.Column() { Width = 150, ID = "Phiavg", Text = "phi avg", DataIndex = "Phiavg", Sortable = true };
         col6.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col6);
 
-        Column col7 = new Ext.Net.Column() { Width = 150, ID = "Pce", Text = "Pce", DataIndex = "Pce", Sortable = true, Align = ColumnAlign.Center };
+        Column col7 = new Ext.Net.Column() { Width = 150, ID = "Pce", Text = "Pce", DataIndex = "Pce", Sortable = true };
         col7.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col7);
 
-        Column col8 = new Ext.Net.Column() { Width = 80, ID = "Swe", Text = "Swe", DataIndex = "Swe", Sortable = true, Align = ColumnAlign.Center };
+        Column col8 = new Ext.Net.Column() { Width = 80, ID = "Swe", Text = "Swe", DataIndex = "Swe", Sortable = true };
         col8.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col8);
 
-        Column col19 = new Ext.Net.Column() { Width = 80, ID = "PcMax", Text = "Pc max", DataIndex = "PcMax", Sortable = true, Align = ColumnAlign.Center };
+        Column col19 = new Ext.Net.Column() { Width = 80, ID = "PcMax", Text = "Pc max", DataIndex = "PcMax", Sortable = true };
         col19.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col19);
 
-        Column col10 = new Ext.Net.Column() { Width = 150, ID = "Swir", Text = "Swir ", DataIndex = "Swir", Sortable = true, Align = ColumnAlign.Center };
+        Column col10 = new Ext.Net.Column() { Width = 150, ID = "Swir", Text = "Swir ", DataIndex = "Swir", Sortable = true };
         col10.Editor.Add(new TextField());
         ColumnInfo.Columns.Add(col10);
 
-        comp_gridpanel.ColumnModel.Columns.Add(ColumnInfo);
+        SATM_gridpanel.ColumnModel.Columns.Add(ColumnInfo);
 
         #endregion Prepare Column Model
 
@@ -156,7 +156,7 @@
 
         command2.Commands.Add(gridcommand2);
         command2.Listeners.Command.Handler = "displayDataset(record)";
-        comp_gridpanel.ColumnModel.Columns.Add(command2);
+        SATM_gridpanel.ColumnModel.Columns.Add(command2);
 
         // column delete control
         CommandColumn command = new CommandColumn() { Width = 25, OverOnly = true, Border = false };
@@ -164,7 +164,7 @@
         gridcommand.ToolTip.Title = "Delete this plug";
         command.Commands.Add(gridcommand);
         command.Listeners.Command.Handler = "delete_plug(record)";
-        comp_gridpanel.ColumnModel.Columns.Add(command);
+        SATM_gridpanel.ColumnModel.Columns.Add(command);
     }
 
 
@@ -188,13 +188,13 @@
     }
 
     // Store refresh
-    protected void comp_store_refresh(object sender, EventArgs e)
+    protected void SATM_store_refresh(object sender, EventArgs e)
     {
         this.bind_data();
     }
 
 
-    protected void comp_upload_click(object sender, DirectEventArgs e)
+    protected void SATM_upload_click(object sender, DirectEventArgs e)
     {
         if (this.FileUploadField2.HasFile)
         {
@@ -204,17 +204,17 @@
             file_upload.SaveAs(pathName);
 
             var file = new System.IO.FileInfo(pathName);
-            comp_list_data1 = MyModel.GetModelsFromExcelFile(pathName);
+            SATM_list_data1 = SATM.GetModelsFromExcelFile(pathName);
             this.bind_data();
             this.upload_window.Hide();
-            List<String> comp_list_data1_str = comp_list_data1.Select(item => item.ToString()).ToList();
-            string comp_list_data1_json = new JavaScriptSerializer().Serialize(comp_list_data1_str);
-            X.AddScript("addDataset(" + comp_list_data1_json + ");");
+            List<String> SATM_list_data1_str = SATM_list_data1.Select(item => item.ToString()).ToList();
+            string SATM_list_data1_json = new JavaScriptSerializer().Serialize(SATM_list_data1_str);
+            X.AddScript("addDataset(" + SATM_list_data1_json + ");");
         }
 
     }
 
-    protected void Comp_Excel_Export(object sender, DirectEventArgs e)
+    protected void SATM_Excel_Export(object sender, DirectEventArgs e)
     {
 
 
@@ -229,7 +229,7 @@
         //}
 
         Response.Clear();
-        Response.AddHeader("Content-Disposition", "attachment; filename=COMP_Summary.xlsx");
+        Response.AddHeader("Content-Disposition", "attachment; filename=SATM_Summary.xlsx");
         Response.AddHeader("Content-Length", summary_file.Length.ToString());
         Response.ContentType = "application/vnd.ms-excel";
         Response.Flush();
@@ -321,7 +321,7 @@
     <script>
 
 
-        var comp_data1 = [
+        var SATM_data1 = [
             "1,1-10,3208.2,3210.2,2.07,52.99,0.167,0.587,0.999,60,0.226",
             "2,11-21,3210.2,3213.2,2.94,112.99,0.190,0.382,0.999,60,0.202",
             "3,22-36,3213.2,3215.9,2.74,100.64,0.175,0.409,0.999,60,0.203",
@@ -365,15 +365,15 @@
             var oilDensity = App.TextOilDensity.getValue().toString();
             var waterDensity = App.TextWaterDensity.getValue().toString();
 
-            for (var i = 0; i < comp_data1.length; i++) {
-                temp1 = temp1 + '/' + comp_data1[i];
+            for (var i = 0; i < SATM_data1.length; i++) {
+                temp1 = temp1 + '/' + SATM_data1[i];
             }
 
             temp1 = temp1.substr(1, temp1.length);
 
-            var url2 = "./Summary.aspx?comp_data1=" + temp1 + "&resSystem=" + resSystem + "&labSystem=" + labSystem + "&oilWaterContact=" + oilWaterContact + "&oilDensity=" + oilDensity + "&waterDensity=" + waterDensity;
+            var url2 = "./Summary.aspx?SATM_data1=" + temp1 + "&resSystem=" + resSystem + "&labSystem=" + labSystem + "&oilWaterContact=" + oilWaterContact + "&oilDensity=" + oilDensity + "&waterDensity=" + waterDensity;
             tab = tabPanel.add({
-                id: "comp_summary",
+                id: "SATM_summary",
                 title: "Summary",
                 closable: true,
                 loader: {
@@ -385,30 +385,30 @@
                     }
                 }
             });
-            tabPanel.setActiveTab("comp_summary");
+            tabPanel.setActiveTab("SATM_summary");
         }
 
 
         var addDataset = function (records) {
             console.log(records);
-            var grid = App.comp_gridpanel;
+            var grid = App.SATM_gridpanel;
             var store = grid.getStore();
 
 
 
             var _Order = grid.getStore().getCount();
 
-            comp_data1 = [];
+            SATM_data1 = [];
 
 
             store.removeAll();
 
 
             for (var i = 0; i < records.length; i++) {
-                comp_data1.push(records[i].toString());
+                SATM_data1.push(records[i].toString());
 
 
-                var data1 = comp_data1[i].toString().split(',');
+                var data1 = SATM_data1[i].toString().split(',');
                 //        "Status", "Zone", "TopDepth", "BottomDepth", "Thickness", "Kavg", "Phiavg", "Pce", "Swe", "PcMax", "Swir"
 
                 store.insert(i, {
@@ -427,7 +427,7 @@
 
         var displayDataset = function (record) {
 
-            var grid = App.comp_gridpanel;
+            var grid = App.SATM_gridpanel;
             var store = grid.getStore();
 
             App.insert_window.show();
@@ -448,7 +448,7 @@
 
         var updateDataset = function (_pos) {
 
-            var grid = App.comp_gridpanel;
+            var grid = App.SATM_gridpanel;
             var store = grid.getStore();
             console.log(store.getAt(_pos));
             store.getAt(_pos).set('Zone', App.txtZone.getValue());
@@ -462,8 +462,8 @@
             store.getAt(_pos).set('PcMax', App.txtPcMax.getValue().toString());
             store.getAt(_pos).set('Swir', App.txtSwir.getValue().toString())
 
-            //---------------comp data1
-            var temp = comp_data1[_pos].toString().split(',');
+            //---------------SATM data1
+            var temp = SATM_data1[_pos].toString().split(',');
 
             temp[2] = App.txtTopDepth.getValue().toString();
             temp[3] = App.txtBottomDepth.getValue().toString();
@@ -475,16 +475,16 @@
             temp[9] = App.txtPcMax.getValue().toString();
             temp[10] = App.txtSwir.getValue().toString();
 
-            comp_data1[_pos] = temp.join(',');
+            SATM_data1[_pos] = temp.join(',');
 
             App.insert_window.hide();
 
 
         };
         //--------------Click on Apply button
-        var cmdApply_comp_click = function () {
-            for (i = 0; i < comp_data1.length; i++) {
-                if (App.txtZone.getValue() == comp_data1[i].toString().split(',')[1]) {
+        var cmdApply_SATM_click = function () {
+            for (i = 0; i < SATM_data1.length; i++) {
+                if (App.txtZone.getValue() == SATM_data1[i].toString().split(',')[1]) {
                     var _pos = i;
                 }
             };
@@ -501,7 +501,7 @@
 
 
         var insert_plug = function () {
-            var grid = App.comp_gridpanel;
+            var grid = App.SATM_gridpanel;
             var store = grid.getStore();
 
             App.insert_window.show();
@@ -531,13 +531,13 @@
             Ext.MessageBox.confirm('Delete Zone ' + record.data.Zone, 'Data will not be recovered, are you sure ?', function (btn) {
                 if (btn == 'yes') {
 
-                    for (var i = 0; i < comp_data1.length; i++) {
-                        console.log("test" + comp_data1[i].toString().split(",")[1]);
-                        if (comp_data1[i].toString().split(",")[1] == record.get('Zone')) { break; }
+                    for (var i = 0; i < SATM_data1.length; i++) {
+                        console.log("test" + SATM_data1[i].toString().split(",")[1]);
+                        if (SATM_data1[i].toString().split(",")[1] == record.get('Zone')) { break; }
                     }
-                    App.comp_store.remove(record);
-                    comp_data1.splice(i, 1);
-                    comp_data2.splice(i, 1);
+                    App.SATM_store.remove(record);
+                    SATM_data1.splice(i, 1);
+                    SATM_data2.splice(i, 1);
                 }
 
 
@@ -566,9 +566,9 @@
 
         var validate = function () {
             var shouldEnabled = true;
-            for (var i = 0; i < comp_data1.length; i++) {
+            for (var i = 0; i < SATM_data1.length; i++) {
 //                "Zone", "TopDepth", "BottomDepth", "Thickness", "Kavg", "Phiavg", "Pce", "Swe", "PcMax", "Swir"
-                var rowValues = comp_data1[i].split(',');
+                var rowValues = SATM_data1[i].split(',');
                 var phi = parseFloat(rowValues[6]);
                 var swe = parseFloat(rowValues[8]);
                 var swir = parseFloat(rowValues[10]);
@@ -623,7 +623,7 @@
     <form id="Form2" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
-        <ext:Viewport ID="comp_viewport" runat="server" Layout="BorderLayout">
+        <ext:Viewport ID="SATM_viewport" runat="server" Layout="BorderLayout">
             <Items>
 
                 <ext:Panel ID="myPanel2" runat="server" Border="false" Region="North">
@@ -634,7 +634,7 @@
                                 <%-- <ext:Component ID="Component22" runat="server" Width="2" />    --%>
                                 <%--                                                        <ext:Container ID="Container25" runat="server">
                                                             <Content>
-                                                                <img  src='/resources/images/COMP.png' width="82" height="49"/>
+                                                                <img  src='/resources/images/SATM.png' width="82" height="49"/>
                                                                 
                                                                 <div align='center'>
                                                                     <font color='#0066ff'>Version 3.1</font>
@@ -690,7 +690,7 @@
 
                                             <Listeners>
 
-                                                <Click Handler="addTab(#{comp_tabpanel}, this);" />
+                                                <Click Handler="addTab(#{SATM_tabpanel}, this);" />
 
                                             </Listeners>
                                         </ext:Button>
@@ -709,7 +709,7 @@
                                         <ext:Button ID="cmdExport" runat="server" Text="Export" IconUrl="/resources/images/export.png" Scale="Large" Width="80" IconAlign="Top" Disabled="false">
 
                                             <DirectEvents>
-                                                <Click OnEvent="Comp_Excel_Export" IsUpload="true" />
+                                                <Click OnEvent="SATM_Excel_Export" IsUpload="true" />
 
                                             </DirectEvents>
                                         </ext:Button>
@@ -723,7 +723,7 @@
                                 <%--         <ext:Container ID="Container19" runat="server" Flex="2" /> --%>
                                 <%--         <ext:Container ID="Container20" runat="server" Layout="VBoxLayout" > --%>
                                 <%--             $1$ <Items> #1# --%>
-                                <%--             $1$     <ext:Image runat="server" ImageUrl='/resources/images/COMP.png' Height="65" Margins="0 0 0 0"  /> #1# --%>
+                                <%--             $1$     <ext:Image runat="server" ImageUrl='/resources/images/SATM.png' Height="65" Margins="0 0 0 0"  /> #1# --%>
                                 <%--             $1$     <ext:Label runat="server" Text="v3.1 Last build: 03/03/2021" Margins="0 0 0 0" /> #1# --%>
                                 <%--             $1$ </Items> #1# --%>
                                 <%--         </ext:Container> --%>
@@ -745,7 +745,7 @@
                 <ext:Panel ID="Panel22" runat="server" Border="false" Layout="FitLayout" Region="Center">
                     <Items>
 
-                        <ext:TabPanel ID="comp_tabpanel" runat="server" Border="false">
+                        <ext:TabPanel ID="SATM_tabpanel" runat="server" Border="false">
                             <Plugins>
                                 <ext:TabScrollerMenu runat="server"
                                     MenuPrefixText="Goto" />
@@ -762,11 +762,11 @@
 
                                     <Items>
 
-                                        <ext:GridPanel ID="comp_gridpanel" runat="server" AutoScroll="true" Layout="FitLayout" Region="Center" Frame="false" Border="false">
+                                        <ext:GridPanel ID="SATM_gridpanel" runat="server" AutoScroll="true" Layout="FitLayout" Region="Center" Frame="false" Border="false">
                                             <Store>
-                                                <ext:Store ID="comp_store" runat="server" OnReadData="comp_store_refresh" PageSize="50" ShowWarningOnFailure="true">
+                                                <ext:Store ID="SATM_store" runat="server" OnReadData="SATM_store_refresh" PageSize="50" ShowWarningOnFailure="true">
                                                     <Model>
-                                                        <ext:Model runat="server" ID="COMP_Model" Name="COMP_Model" />
+                                                        <ext:Model runat="server" ID="SATM_Model" Name="SATM_Model" />
                                                     </Model>
                                                     <Sorters>
                                                         <ext:DataSorter Property="Plug_No" Direction="ASC" />
@@ -783,7 +783,7 @@
 
 
                                             <BottomBar>
-                                                <ext:PagingToolbar ID="PagingToolbar1" runat="server" StoreID="comp_store" DisplayInfo="false">
+                                                <ext:PagingToolbar ID="PagingToolbar1" runat="server" StoreID="SATM_store" DisplayInfo="false">
 
                                                     <Items>
                                                         <ext:Label ID="Label1" runat="server" Text="Page size:" />
@@ -855,7 +855,7 @@
                 </ext:Button>
                 <ext:Button ID="cmdApply_micp" runat="server" Text="Apply" Icon="Accept">
                     <Listeners>
-                        <Click Handler="cmdApply_comp_click();" />
+                        <Click Handler="cmdApply_SATM_click();" />
                     </Listeners>
 
                 </ext:Button>
@@ -1126,12 +1126,12 @@
 
             <Buttons>
                 <ext:Button ID="cmdGuide" runat="server" Icon="BookOpen" Text="Guide" />
-                <ext:Button ID="cmdOk_Load_comp" runat="server" Text="OK" Icon="Accept">
+                <ext:Button ID="cmdOk_Load_SATM" runat="server" Text="OK" Icon="Accept">
                     <DirectEvents>
-                        <Click OnEvent="comp_upload_click" IsUpload="true" />
+                        <Click OnEvent="SATM_upload_click" IsUpload="true" />
                     </DirectEvents>
                 </ext:Button>
-                <ext:Button ID="cmdCancel_Load_comp" runat="server" Text="Cancel" Icon="Decline">
+                <ext:Button ID="cmdCancel_Load_SATM" runat="server" Text="Cancel" Icon="Decline">
                     <Listeners>
                         <Click Handler="App.upload_window.hide();" />
                     </Listeners>

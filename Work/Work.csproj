@@ -235,7 +235,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Data\MyModel.cs" />
+    <Compile Include="Data\SATM.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -286,7 +286,7 @@
     <EmbeddedResource Include="template\temp.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="template\Comp_Output.xlsx">
+    <EmbeddedResource Include="template\SATM_Output.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="resources\Manual.pdf" />
